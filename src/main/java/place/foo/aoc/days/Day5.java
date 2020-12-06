@@ -24,8 +24,8 @@ public class Day5 implements AdventSolution {
         assert input != null;
         for (String s : input) {
 
-            int min = 0;
-            int max = 127;
+            byte min = 0;
+            byte max = 127;
 
             for (int i = 0; i < 8; i++) {
 
@@ -72,33 +72,4 @@ public class Day5 implements AdventSolution {
         return new Answer(HIGHEST,empty);
     }
 
-    int[] getBinary(String s) {
-        List<Integer> binary = new ArrayList<Integer>();
-        for (char c : s.toCharArray()){
-            int i=0;
-            switch (c) {
-                case 'B':
-                    i = 0;
-                    break;
-                case 'L':
-                    i = 0;
-                    break;
-                default:
-                    i = 1;
-                    break;
-            }
-            binary.add(i);
-        }
-        return binary.stream().mapToInt(i -> i).toArray();
-    }
-
-    int binToDec(int[] binary) {
-        int dec = 0;
-        for (int i = binary.length - 1; i >= 0; i--) {
-            if (binary[binary.length - i - 1] == 1)
-                dec += Math.pow(2, i);
-
-        }
-        return dec;
-    }
 }
