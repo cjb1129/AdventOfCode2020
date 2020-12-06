@@ -5,7 +5,6 @@ import main.java.place.foo.aoc.Answer;
 import main.java.place.foo.aoc.Library;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,64 +19,57 @@ public class Day5 implements AdventSolution {
 
         String[] input = Library.getInput("src/main/resources/Day5.txt");
 
-        List<Integer> ids = new ArrayList<Integer>();
+        List<Integer> ids = new ArrayList<>();
 
+        assert input != null;
         for (String s : input) {
 
-            List<Integer> row = new ArrayList<Integer>();
-            List<Integer> col = new ArrayList<Integer>();
-
-
-
-            for (int i = 0; i < 127; i++)
-                row.add(i);
-
-            for (int i = 0; i < 8; i++)
-                col.add(i);
+            int min = 0;
+            int max = 127;
 
             for (int i = 0; i < 8; i++) {
-                System.out.println(Arrays.toString(row.toArray()));
+
                 if (s.charAt(i) == 'F') {
-                    for (int j = (int) Math.ceil(row.size() / 2); j < row.size(); j++) {
-                            row.remove(row.size() - 1);
-                    }
+                    max -= ((max - min) / 2) + 1;
                 }
                 if (s.charAt(i) == 'B') {
-                    for (int j = 0; j < (int) Math.ceil(row.size() / 2); j++) {
-                        row.remove(0);
-                    }
+                    min += ((max - min) / 2) + 1;
                 }
             }
 
-            System.out.println(Arrays.toString(row.toArray()));
+            final int row = s.charAt(6) == 'F' ? min : max;
 
+            max = 7;
+            min = 0;
 
+            for (int i = 7; i < s.length(); i++) {
+                if (s.charAt(i) == 'L') {
+                    max -= ((max - min) / 2) + 1;
+                }
+                if (s.charAt(i) == 'R') {
+                    min += ((max - min) / 2) + 1;
+                }
+            }
+            final int col = s.charAt(s.length() - 1) == 'R' ? max : min;
 
-
-
-
-
-            //int row = binToDec(getBinary(s.substring(0,7)));
-            //int col = binToDec(getBinary(s.substring(7,s.length())));
-
-            //String r = s.replaceAll("B|L","0").replaceAll("F|R","1");
-
-            //int row = Integer.parseInt(r.substring(0,7),2);
-            //int col = Integer.parseInt(r.substring(7,r.length()),2);
-
-            //idsList.add((row * 8) + col);
+            ids.add((row * 8) + col);
         }
 
-        //System.out.println(Arrays.toString(idsList.toArray()));
+        Collections.sort(ids);
 
-        //Collections.sort(idsList);
+        final int HIGHEST = ids.get(ids.size() - 1);
 
-        //final int MAX = idsList.get(idsList.size() - 1);
+        int empty = 0;
 
-        //System.out.println("(" + MAX / 8 + " * 8) + " + MAX % 8);
-        //System.out.println(MAX);
+        int i = 0;
+        while (i < (HIGHEST - 1) && empty == 0) {
+            if(i != HIGHEST - 1 && ids.get(i+1) - ids.get(i) > 1) {
+                empty = ids.get(i) + 1;
+            }
+            i++;
+        }
 
-        return new Answer(0.0,0.0);
+        return new Answer(HIGHEST,empty);
     }
 
     int[] getBinary(String s) {

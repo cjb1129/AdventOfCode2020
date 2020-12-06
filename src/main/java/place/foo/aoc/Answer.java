@@ -21,4 +21,8 @@ public final class Answer {
     public double getSecond() {
         return second;
     }
+
+    public String toString() {
+        return this.first + ", " + this.second;
+    }
 }
